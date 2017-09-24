@@ -306,7 +306,8 @@ below.
     will result in ``env.password = 'bar'``, not ``'foo'``
 
     Multiple ``KEY=VALUE`` pairs may be comma-separated, e.g. ``fab --set
-    var1=val1,var2=val2``.
+    var1=val1,var2=val2``, or may be indicated with multiple --set options,
+    e.g. ``fab --set var1=val1 --set var2=val2``.
 
     Other than basic string values, you may also set env vars to True by
     omitting the ``=VALUE`` (e.g. ``fab --set KEY``), and you may set values to

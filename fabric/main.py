@@ -321,7 +321,8 @@ def parse_options():
     parser.add_option('--set',
         metavar="KEY=VALUE,...",
         dest='env_settings',
-        default="",
+        action="append",
+        default=[],
         help="comma separated KEY=VALUE pairs to set Fab env vars"
     )
 
@@ -612,15 +613,16 @@ def main(fabfile_locations=None):
         # was silly enough to specify the same key in both places.
         # E.g. "fab --set shell=foo --shell=bar" should have env.shell set to
         # 'bar', not 'foo'.
-        for pair in _escape_split(',', options.env_settings):
-            pair = _escape_split('=', pair)
-            # "--set x" => set env.x to True
-            # "--set x=" => set env.x to ""
-            key = pair[0]
-            value = True
-            if len(pair) == 2:
-                value = pair[1]
-            state.env[key] = value
+        for item in options.env_settings:
+            for pair in _escape_split(',', item):
+                pair = _escape_split('=', pair)
+                # "--set x" => set env.x to True
+                # "--set x=" => set env.x to ""
+                key = pair[0]
+                value = True
+                if len(pair) == 2:
+                    value = pair[1]
+                state.env[key] = value
 
         # Update env with any overridden option values
         # NOTE: This needs to remain the first thing that occurs
